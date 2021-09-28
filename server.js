@@ -31,15 +31,16 @@ function getfruit(req, res) {
     .get(url)
     .then((result) => {
       res.send(result.data.fruits);
-      console.log(result.data.fruits);
+    //   console.log(result.data.fruits);
     })
-    .catch();
+    .catch(console.log("err in get"));
 }
 
 const Fruitschema = new mongoose.Schema({
   name: String,
+  price: String,
   image: String,
-  image: String,
+  email:String,
 });
 
 const Fruit = mongoose.model("fruit", Fruitschema);
@@ -57,11 +58,13 @@ function getdata(req, res) {
   });
 }
 
-server.get("/postdata", postdata);
+server.post("/postdata", postdata);
 async function postdata(req, res) {
   const email = req.query.email;
   const { name, image, price } = req.body;
-  await Fruit.create({ name, image, price });
+  console.log(name)
+  console.log(email)
+  await Fruit.create({email, name, image, price });
 
   Fruit.find({ email: email }, (err, result) => {
     if (err) {
